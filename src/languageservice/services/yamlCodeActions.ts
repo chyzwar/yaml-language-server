@@ -24,9 +24,9 @@ import { getFirstNonWhitespaceCharacterAfterOffset } from '../utils/strings';
 import { matchOffsetToDocument } from '../utils/arrUtils';
 import { CST, isMap, isSeq, YAMLMap } from 'yaml';
 import { yamlDocumentsCache } from '../parser/yaml-documents';
+import { klona } from 'klona';
 import { FlowStyleRewriter } from '../utils/flow-style-rewriter';
 import { ASTNode } from '../jsonASTTypes';
-import * as _ from 'lodash';
 import { SourceToken } from 'yaml/dist/parse/cst';
 import { ErrorCode } from 'vscode-json-languageservice';
 import * as l10n from '@vscode/l10n';
@@ -252,7 +252,7 @@ export class YamlCodeActions {
           node = node.parent;
         }
         if (node && isMap(node.internalNode)) {
-          const sorted: YAMLMap = _.cloneDeep(node.internalNode);
+          const sorted: YAMLMap = klona(node.internalNode);
           if (
             (sorted.srcToken.type === 'block-map' || sorted.srcToken.type === 'flow-collection') &&
             (node.internalNode.srcToken.type === 'block-map' || node.internalNode.srcToken.type === 'flow-collection')
